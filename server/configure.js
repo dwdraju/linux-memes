@@ -30,12 +30,14 @@ if ('development' === app.get('env')) {
 		layoutsDir: app.get('views') + '/layouts',
 		partialsDir: [app.get('views') + 'partials'],
 		helpers: {
-		timeago: function(timestamp) {
-		return moment(timestamp).startOf('minute').fromNow();
-			}
+			timeago: function(timestamp) {
+				console.log(timestamp);
+				return moment(timestamp).startOf('minute').fromNow();
+				}
 		}
 	}).engine);
-	app.set('view engine','handlebars');
+	app.engine('.hbs', exphbs({extname: '.hbs'}));
+	app.set('view engine', '.hbs');
 
 	return app;
 };
