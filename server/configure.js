@@ -6,16 +6,21 @@ var path = require('path'),
 	cookieParser = require('cookie-parser'),
 	morgan = require('morgan'),
 	methodOverride = require('method-override'),
-	errorHandler = require('errorhandler');
-	moment = require('moment');
+	errorHandler = require('errorhandler'),
+	moment = require('moment'),
+	//for file upload otherwise bodyParser handles urls and json
+	multer = require('multer');
 
 module.exports = function(app){
 	app.use(morgan('dev'));
 	//app.use(bodyParser.urlencoded({'extended':true}));
 	//app.use(bodyParser.json());
-	app.use(bodyParser({
-		uploadDir:path.join(__dirname, 'public/upload/temp')
-	}));
+	// app.use(bodyParser({
+	// 	uploadDir:path.join(__dirname, 'public/upload/temp')
+	// }));
+	app.use(multer({ dest: path.join(__dirname, 'public/upload/temp')}));
+	//app.use(multer({dest:'./public/upload/temp/'}).single('photo'));
+
 	app.use(methodOverride());
 	app.use(cookieParser('some-secret-value-here'));
 	routes(app);//moving the routes to routes folder.
