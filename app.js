@@ -1,16 +1,17 @@
-var express = require('express');
-
-var app = express();
-
-config = require('./server/configure'),
+var express = require('express'),
+    config = require('./server/configure'),
+    app = express(),
+    mongoose = require('mongoose');
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
 app = config(app);
 
-var port = process.env.PORT || 3000;
-app.set('views', __dirname + '/views');
-
-/*app.get('/', function(req, res){
-	res.send("Welcome to Nodejs App");
-});*/
-app.listen(port, function(){
-	console.log('Running of PORT:' + port);
+mongoose.connect('mongodb://localhost/imgPloadr');
+mongoose.connection.on('open', function() {
+    console.log('Mongoose connected.');
 });
+
+var server = app.listen(app.get('port'), function() {
+    console.log('Server up: http://localhost:' + app.get('port'));
+});
+
